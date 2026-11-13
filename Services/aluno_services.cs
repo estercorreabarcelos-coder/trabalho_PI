@@ -55,4 +55,33 @@ public class AlunoService
             Console.WriteLine("Nenhum aluno não encontrado.");
         }
     }
-}
+        public void AtualizarAluno(int id, string novoNome, string novoEmail, string novaSenha)
+        {
+            Aluno? aluno = BuscarPorId(id);
+            if (aluno != null)
+            {
+                aluno.Nome = novoNome;
+                aluno.Email = novoEmail;
+                aluno.Senha = novaSenha;
+                Console.WriteLine("Aluno atualizado com sucesso!");
+            }
+            else
+            {
+                Console.WriteLine("Aluno não encontrado.");
+            }
+        }
+
+        public void ExcluirAluno(int id)
+        {
+            Aluno? aluno = BuscarPorId(id);
+            if (aluno != null)
+            {
+                alunos.Remove(aluno);
+                Console.WriteLine("Aluno excluído com sucesso!");
+            }
+            else
+            {
+                Console.WriteLine("Aluno não encontrado.");
+            }
+        }
+    }

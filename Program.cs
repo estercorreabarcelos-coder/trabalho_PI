@@ -1,25 +1,25 @@
-﻿using System.Security.Cryptography.X509Certificates;
-
-AlunoService alunoService = new  AlunoService();
+﻿AlunoService alunoService = new  AlunoService();
 
 int opcao = 0;
 
 while (opcao != 5)
 {
     Console.Clear();
-    Console.WriteLine("==================================================");
-    Console.WriteLine("   ORGANIZAÊ - ORGANIZADOR DE TAREFAS ESCOLARES   ");
-    Console.WriteLine("==================================================");
+    Console.WriteLine(" ==================================================");
+    Console.WriteLine(" |  ORGANIZAÊ - ORGANIZADOR DE TAREFAS ESCOLARES  | ");
+    Console.WriteLine(" ==================================================");
 
     Console.WriteLine("BEM-VINDO AO ORGANIZAÊ, O SEU ORGANIZADOR DE TAREFAS ESCOLARES!");
     Console.WriteLine("Aqui você poderá organizar suas tarefas de forma simples e eficiente.");
     Console.WriteLine("Vamos começar! Por favor, escolha uma das opções abaixo:");
-    Console.WriteLine("====================================");
+    Console.WriteLine("===================================================");
     Console.WriteLine("1: Cadastrar Aluno");
     Console.WriteLine("2: Listar Alunos");
     Console.WriteLine("3: Buscar Aluno por ID");
     Console.WriteLine("4: Buscar Aluno por Nome");
-    Console.WriteLine("5: Sair");
+    Console.WriteLine("5: Atualizar Aluno");
+    Console.WriteLine("6: Excluir Aluno");
+    Console.WriteLine("7: Sair");
     Console.Write("Escolha uma opção: ");
 
 
@@ -99,6 +99,41 @@ while (opcao != 5)
             break;
 
         case 5:
+            Console.WriteLine(" ======= ATUALIZAR ALUNO ======= ");
+            Console.Write("Digite o ID do aluno que deseja atualizar: ");
+            if (int.TryParse(Console.ReadLine(), out int idAtualizar))
+            {
+                Console.Write("Novo Nome: ");
+                string novoNome = Console.ReadLine() ?? "";
+                Console.Write("Novo Email: ");
+                string novoEmail = Console.ReadLine() ?? "";
+                Console.Write("Nova Senha: ");
+                string novaSenha = Console.ReadLine() ?? "";
+
+                alunoService.AtualizarAluno(idAtualizar, novoNome, novoEmail, novaSenha);
+            }
+            else
+            {
+                Console.WriteLine("ID inválido. Por favor, digite um número.");
+            }
+            Console.ReadKey();
+            break;
+
+        case 6:
+            Console.WriteLine(" ======= EXCLUIR ALUNO ======= ");
+            Console.Write("Digite o ID do aluno que deseja excluir: ");
+            if (int.TryParse(Console.ReadLine(), out int idExcluir))
+            {
+                alunoService.ExcluirAluno(idExcluir);
+            }
+            else
+            {
+                Console.WriteLine("ID inválido. Por favor, digite um número.");
+            }
+            Console.ReadKey();
+            break;
+
+        case 7:
             Console.WriteLine("Você estásaindodo ORGANIZAÊ, ATÉ A PRÓXIMA!...");
             break;
 
