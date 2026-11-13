@@ -21,4 +21,38 @@ public class AlunoService
             Console.WriteLine($"Status: " + aluno.Status);
         }
     }
+
+    public Aluno? BuscarPorId(int id)
+    {
+        foreach (Aluno aluno in alunos)
+        {
+            if (aluno.IdAluno == id)
+            {
+                return aluno;
+            }
+        }
+        return null;
+    }
+    public void BuscarPorNome(string nome)
+    {
+        bool alunoEncontrado = false;
+
+        foreach (Aluno aluno in alunos)
+        {
+            if (aluno.Nome.Equals(nome, StringComparison.OrdinalIgnoreCase))
+            {
+                Console.WriteLine("================================");
+                Console.WriteLine($"ID: " + aluno.IdAluno);
+                Console.WriteLine($"Nome: " + aluno.Nome);
+                Console.WriteLine($"Email: " + aluno.Email);
+                Console.WriteLine($"Status: " + aluno.Status);
+                alunoEncontrado = true;
+            }
+        }
+
+        if (!alunoEncontrado)
+        {
+            Console.WriteLine("Nenhum aluno não encontrado.");
+        }
+    }
 }
