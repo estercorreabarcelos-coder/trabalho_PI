@@ -55,3 +55,9 @@ CodeCoverage/
 *.VisualState.xml
 TestResult.xml
 nunit-*.xml
+DesenhoAuto/DesenhoAuto.csproj
+DesenhoAuto/MeuDesenho/desenho.png
+DesenhoAuto/MeuDesenho/MeuDesenho.csproj
+DesenhoAuto/sla_alide.cs
+DesenhoAuto/Program.cs
+DesenhoAuto/MeuDesenho/Program.cs
