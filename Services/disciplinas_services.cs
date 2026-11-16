@@ -1,4 +1,7 @@
 using System.Collections.Generic;
+using System.Security.Principal;
+using trabalho_PI.Models;
+
 public class DisciplinaService
 {
    private List<Disciplina> disciplinas = new List<Disciplina>();
@@ -28,4 +31,43 @@ public class DisciplinaService
            Console.WriteLine("Nenhuma disciplina encontrada.");
        }
    }
+
+   public void AtualizarDisciplina(int IdDisciplina, int idAluno, string novoNome, string novaDescricao)
+    {
+        foreach (Disciplina disciplina in disciplinas)
+        {
+            if (disciplina.IdDisciplina == IdDisciplina && disciplina.IdAluno == idAluno)
+            {
+                disciplina.Nome = novoNome;
+                disciplina.Descricao = novaDescricao;
+                Console.WriteLine("Disciplina atualizada com sucesso!");
+                return;
+            }
+        }
+        Console.WriteLine("Disciplina não encontrada.");
+    }
+
+    public void ExcluirDisciplina(int idDisciplina, int idAluno)
+    {
+    Disciplina? disciplinaEncontrada = null;
+    foreach (Disciplina disciplina in disciplinas)
+    {
+        if (disciplina.IdDisciplina == idDisciplina &&
+            disciplina.IdAluno == idAluno)
+        {
+            disciplinaEncontrada = disciplina;
+            break;
+        }
+    }
+    if (disciplinaEncontrada != null)
+    {
+        disciplinas.Remove(disciplinaEncontrada);
+        Console.WriteLine("Disciplina excluída com sucesso!");
+    }
+    else
+    {
+        Console.WriteLine("Disciplina não encontrada.");
+    }
+    }
 }
+

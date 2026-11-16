@@ -1,8 +1,10 @@
 ﻿AlunoService alunoService = new  AlunoService();
 
+DisciplinaService disciplinaService = new DisciplinaService();
+
 int opcao = 0;
 
-while (opcao != 5)
+while (opcao != 10)
 {
     Console.Clear();
     Console.WriteLine(" ==================================================");
@@ -19,7 +21,10 @@ while (opcao != 5)
     Console.WriteLine("4: Buscar Aluno por Nome");
     Console.WriteLine("5: Atualizar Aluno");
     Console.WriteLine("6: Excluir Aluno");
-    Console.WriteLine("7: Sair");
+    Console.WriteLine("7: Cadastrar Disciplina");
+    Console.WriteLine("8: Listar Disciplinas");
+    Console.WriteLine("9: Atualizar Disciplina");
+    Console.WriteLine("10: Sair");
     Console.Write("Escolha uma opção: ");
 
 
@@ -134,6 +139,77 @@ while (opcao != 5)
             break;
 
         case 7:
+            Console.WriteLine("======= CADASTRO DE DISCIPLINA ======= ");
+            Console.Write("ID do Aluno: ");
+            if (int.TryParse(Console.ReadLine(), out int idAluno))
+            {
+                Console.Write("Nome da Disciplina: ");
+                string nomeDisciplina = Console.ReadLine() ?? "";
+
+                Console.Write("Descrição da Disciplina: ");
+                string descricao = Console.ReadLine() ?? "";
+
+                disciplinaService.CadastrarDisciplina(
+                    nomeDisciplina,
+                    descricao, 
+                    idAluno
+                );
+            }
+            else
+            {
+                Console.WriteLine("ID inválido. Por favor, digite um número.");
+            }
+            Console.ReadKey();
+            break;
+
+        case 8:
+            Console.WriteLine("======= LISTA DE DISCIPLINAS ======= ");
+            Console.Write("Digite o ID do aluno para listar suas disciplinas: ");
+            if (int.TryParse(Console.ReadLine(), out int idAlunoLista))
+            {
+                disciplinaService.ListarDisciplinas(idAlunoLista);
+            }
+            else
+            {
+                Console.WriteLine("ID inválido. Por favor, digite um número.");
+            }
+            Console.ReadKey();
+            break;
+
+        case 9:
+            Console.WriteLine("======= ATUALIZAR DISCIPLINA ======= ");
+            Console.Write("Digite o ID da disciplina que deseja atualizar: ");
+            if (int.TryParse(Console.ReadLine(), out int idDisciplinaAtualizar))
+            {
+                Console.Write("Digite o ID do aluno dono da disciplina: ");
+                if (int.TryParse(Console.ReadLine(), out int idAlunoDisciplina))
+                {
+                    Console.Write("Novo Nome da Disciplina: ");
+                    string novoNomeDisciplina = Console.ReadLine() ?? "";
+
+                    Console.Write("Nova Descrição da Disciplina: ");
+                    string novaDescricaoDisciplina = Console.ReadLine() ?? "";
+
+                    disciplinaService.AtualizarDisciplina(
+                        idDisciplinaAtualizar,
+                        idAlunoDisciplina,
+                        novoNomeDisciplina,
+                        novaDescricaoDisciplina
+                    );
+                }
+                else
+                {
+                    Console.WriteLine("ID do aluno inválido. Por favor, digite um número.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("ID da disciplina inválido. Por favor, digite um número.");
+            }
+            Console.ReadKey();
+            break;
+
+        case 10:
             Console.WriteLine("Você estásaindodo ORGANIZAÊ, ATÉ A PRÓXIMA!...");
             break;
 

@@ -1,3 +1,5 @@
+namespace trabalho_PI.Models;
+
 public class Disciplina
 {
     public int IdDisciplina { get; set; }
