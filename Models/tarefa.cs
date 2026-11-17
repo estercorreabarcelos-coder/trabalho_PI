@@ -16,5 +16,6 @@ public class Tarefa
         DataCadastro = DateTime.Now;
         PrazoEntrega = prazoEntrega;
         Status = "Pendente";
+        IdDisciplina = idDisciplina;
     }
 }

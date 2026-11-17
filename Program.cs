@@ -2,9 +2,11 @@
 
 DisciplinaService disciplinaService = new DisciplinaService();
 
+TarefaServices tarefaService = new TarefaServices();
+
 int opcao = 0;
 
-while (opcao != 10)
+while (opcao != 15)
 {
     Console.Clear();
     Console.WriteLine(" ==================================================");
@@ -24,7 +26,12 @@ while (opcao != 10)
     Console.WriteLine("7: Cadastrar Disciplina");
     Console.WriteLine("8: Listar Disciplinas");
     Console.WriteLine("9: Atualizar Disciplina");
-    Console.WriteLine("10: Sair");
+    Console.WriteLine("10: Excluir Disciplina");
+    Console.WriteLine("11: Cadastrar Tarefa");
+    Console.WriteLine("12: Listar Tarefas");
+    Console.WriteLine("13: Atualizar Tarefa");
+    Console.WriteLine("14: Excluir Tarefa");
+    Console.WriteLine("15: Sair");
     Console.Write("Escolha uma opção: ");
 
 
@@ -147,11 +154,11 @@ while (opcao != 10)
                 string nomeDisciplina = Console.ReadLine() ?? "";
 
                 Console.Write("Descrição da Disciplina: ");
-                string descricao = Console.ReadLine() ?? "";
+                string descricaoDisciplina = Console.ReadLine() ?? "";
 
                 disciplinaService.CadastrarDisciplina(
                     nomeDisciplina,
-                    descricao, 
+                    descricaoDisciplina, 
                     idAluno
                 );
             }
@@ -209,7 +216,122 @@ while (opcao != 10)
             Console.ReadKey();
             break;
 
+
         case 10:
+            Console.WriteLine("======= EXCLUIR DISCIPLINA ======= ");
+            Console.Write("Digite o ID da disciplina que deseja excluir: ");
+            if (int.TryParse(Console.ReadLine(), out int idDisciplinaExcluir))
+            {
+                Console.Write("Digite o ID do aluno dono da disciplina: ");
+                if (int.TryParse(Console.ReadLine(), out int idAlunoDisciplinaExcluir))
+                {
+                    disciplinaService.ExcluirDisciplina(
+                        idDisciplinaExcluir, 
+                        idAlunoDisciplinaExcluir
+                    );
+                }
+                else
+                {
+                    Console.WriteLine("ID do aluno inválido. Por favor, digite um número.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("ID da disciplina inválido. Por favor, digite um número.");
+            }
+            Console.ReadKey();
+            break;
+
+        case 11:
+            Console.WriteLine("======= CADASTRO DE TAREFA ======= ");
+            Console.Write("Digite o título da tarefa: ");
+            string titulo = Console.ReadLine() ?? "";
+
+            Console.Write("Digite a descrição da tarefa: ");
+            string descricaoTarefa   = Console.ReadLine() ?? "";
+
+            Console.Write("Digite o tipo da tarefa: ");
+            string tipo = Console.ReadLine() ?? "";
+
+            Console.Write("Digite o prazo de entrega (dd/mm/yyyy): ");
+            if (DateTime.TryParse(Console.ReadLine(), out DateTime prazoEntrega))
+            {
+                Console.Write("Digite o ID da disciplina: ");
+                if (int.TryParse(Console.ReadLine(), out int idDisciplina))
+                {
+                    tarefaService.CadastrarTarefa(titulo, descricaoTarefa, tipo, prazoEntrega, idDisciplina);
+                }
+                else
+                {
+                    Console.WriteLine("ID da disciplina inválido. Por favor, digite um número.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Prazo de entrega inválido. Por favor, digite uma data válida.");
+            }
+            Console.ReadKey();
+            break;
+
+        case 12:
+            Console.WriteLine("======= LISTA DE TAREFAS ======= ");
+            Console.Write("Digite o ID da disciplina para listar suas tarefas: ");
+            if (int.TryParse(Console.ReadLine(), out int idDisciplinaLista))
+            {
+                tarefaService.ListarTarefas(idDisciplinaLista);
+            }
+            else
+            {
+                Console.WriteLine("ID da disciplina inválido. Por favor, digite um número.");
+            }
+            Console.ReadKey();
+            break;
+
+        case 13:
+            Console.WriteLine("======= ATUALIZAR TAREFA ======= ");
+            Console.Write("Digite o ID da tarefa que deseja atualizar: ");
+            int idTarefaAtualizar = int.Parse(Console.ReadLine()!);
+
+            Console.Write("Digite o ID da disciplina da Disciplina: ");
+            int idDisciplinaTarefaAtualizar = int.Parse(Console.ReadLine()!);
+
+            Console.Write("Novo Título da Tarefa: ");
+            string novoTitulo = Console.ReadLine()!;
+
+            Console.Write("Nova Descrição da Tarefa: ");
+            string novaDescricao = Console.ReadLine()!;
+
+            Console.Write("Novo Tipo da Tarefa: ");
+            string novoTipo = Console.ReadLine()!;
+
+            Console.Write("Digite o prazo de entrega (dd/mm/yyyy): ");
+            DateTime novoPrazoEntrega = DateTime.Parse(Console.ReadLine()!);
+            Console.Write("Novo Status da Tarefa (Pendente/Concluída): ");
+            string novoStatus = Console.ReadLine()!;
+
+            tarefaService.AtualizarTarefa(
+                idTarefaAtualizar,
+                idDisciplinaTarefaAtualizar,
+                novoTitulo,
+                novaDescricao,
+                novoTipo,
+                novoPrazoEntrega,
+                novoStatus
+            );
+
+            break;
+        
+        case 14:
+            Console.WriteLine("======= EXCLUIR TAREFA ======= ");
+            Console.Write("Digite o ID da tarefa que deseja excluir: ");
+            int idTarefaExcluir = int.Parse(Console.ReadLine()!);
+            Console.Write("Digite o ID da disciplina da Tarefa: ");
+            int idDisciplinaTarefaExcluir = int.Parse(Console.ReadLine()!);
+
+            tarefaService.ExcluirTarefa(idTarefaExcluir, idDisciplinaTarefaExcluir);
+            break;
+            
+        case 15:
             Console.WriteLine("Você estásaindodo ORGANIZAÊ, ATÉ A PRÓXIMA!...");
             break;
 
