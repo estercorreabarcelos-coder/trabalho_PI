@@ -163,26 +163,92 @@ case 1:
             Console.ReadKey();
             break;
 
-        case 5:
-            Console.WriteLine(" ======= ATUALIZAR ALUNO ======= ");
-            Console.Write("Digite o ID do aluno que deseja atualizar: ");
-            if (int.TryParse(Console.ReadLine(), out int idAtualizar))
-            {
-                Console.Write("Novo Nome: ");
-                string novoNome = Console.ReadLine() ?? "";
-                Console.Write("Novo Email: ");
-                string novoEmail = Console.ReadLine() ?? "";
-                Console.Write("Nova Senha: ");
-                string novaSenha = Console.ReadLine() ?? "";
+        
+case 5:
 
-                alunoService.AtualizarAluno(idAtualizar, novoNome, novoEmail, novaSenha);
+    Console.Clear();
+    Console.WriteLine(" ======= ATUALIZAR ALUNO ======= ");
+
+    Console.Write("Digite o ID do aluno que deseja atualizar: ");
+
+    if (int.TryParse(Console.ReadLine(), out int idAtualizar))
+    {
+        Console.Write("Novo Nome: ");
+        string novoNome = Console.ReadLine() ?? "";
+
+        // VALIDAÇÃO DO EMAIL
+        string novoEmail;
+
+        do
+        {
+            Console.Write("Novo Email: ");
+            novoEmail = (Console.ReadLine() ?? "").Trim();
+
+            string[] partes = novoEmail.Split('@');
+
+            bool emailValido =
+                partes.Length == 2 &&
+                partes[0].Length > 0 &&
+                !partes[0].Contains(' ') &&
+                (
+                    partes[1].Equals("gmail.com", StringComparison.OrdinalIgnoreCase) ||
+                    partes[1].Equals("hotmail.com", StringComparison.OrdinalIgnoreCase) ||
+                    partes[1].Equals("organizaê.com", StringComparison.OrdinalIgnoreCase)
+                );
+
+            if (!emailValido)
+            {
+                Console.WriteLine("\nEmail inválido!");
+                Console.WriteLine("Utilize @gmail.com, @hotmail.com ou @organizaê.com.");
+                Console.WriteLine("Digite novamente.\n");
             }
             else
             {
-                Console.WriteLine("ID inválido. Por favor, digite um número.");
+                break;
             }
-            Console.ReadKey();
-            break;
+
+        } while (true);
+
+
+        // VALIDAÇÃO DA SENHA
+        string novaSenha;
+
+        do
+        {
+            Console.Write("Nova Senha: ");
+            novaSenha = Console.ReadLine() ?? "";
+
+            if (novaSenha.Length < 8)
+            {
+                Console.WriteLine("\nSenha com dígitos insuficientes!");
+                Console.WriteLine("A senha deve possuir pelo menos 8 caracteres.");
+                Console.WriteLine("Digite novamente.\n");
+            }
+
+        } while (novaSenha.Length < 8);
+
+
+        // ATUALIZAR ALUNO
+        alunoService.AtualizarAluno(
+            idAtualizar,
+            novoNome,
+            novoEmail,
+            novaSenha
+        );
+
+        Console.WriteLine("\nDados do aluno atualizados!");
+
+    }
+    else
+    {
+        Console.WriteLine("ID inválido. Por favor, digite um número.");
+    }
+
+    Console.WriteLine("\nPressione qualquer tecla para continuar...");
+    Console.ReadKey();
+
+    break;
+
 
         case 6:
             Console.WriteLine(" ======= EXCLUIR ALUNO ======= ");
