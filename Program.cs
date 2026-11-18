@@ -164,6 +164,7 @@ case 1:
             break;
 
         
+
 case 5:
 
     Console.Clear();
@@ -202,12 +203,18 @@ case 5:
                 Console.WriteLine("Utilize @gmail.com, @hotmail.com ou @organizaê.com.");
                 Console.WriteLine("Digite novamente.\n");
             }
-            else
-            {
-                break;
-            }
 
-        } while (true);
+        } while (
+            !novoEmail.Contains('@') ||
+            novoEmail.Split('@').Length != 2 ||
+            novoEmail.Split('@')[0].Length == 0 ||
+            novoEmail.Contains(' ') ||
+            !(
+                novoEmail.Split('@')[1].Equals("gmail.com", StringComparison.OrdinalIgnoreCase) ||
+                novoEmail.Split('@')[1].Equals("hotmail.com", StringComparison.OrdinalIgnoreCase) ||
+                novoEmail.Split('@')[1].Equals("organizaê.com", StringComparison.OrdinalIgnoreCase)
+            )
+        );
 
 
         // VALIDAÇÃO DA SENHA
@@ -228,15 +235,23 @@ case 5:
         } while (novaSenha.Length < 8);
 
 
-        // ATUALIZAR ALUNO
-        alunoService.AtualizarAluno(
+        // ATUALIZAÇÃO DO ALUNO
+        bool atualizado = alunoService.AtualizarAluno(
             idAtualizar,
             novoNome,
             novoEmail,
             novaSenha
         );
 
-        Console.WriteLine("\nDados do aluno atualizados!");
+        if (atualizado)
+        {
+            Console.WriteLine("\nDados do aluno atualizados!");
+        }
+        else
+        {
+            Console.WriteLine("\nAluno não encontrado.");
+            Console.WriteLine("Nenhuma alteração foi realizada.");
+        }
 
     }
     else
@@ -248,6 +263,7 @@ case 5:
     Console.ReadKey();
 
     break;
+
 
 
         case 6:
@@ -411,7 +427,7 @@ case 5:
             Console.Write("Digite o ID da tarefa que deseja atualizar: ");
             int idTarefaAtualizar = int.Parse(Console.ReadLine()!);
 
-            Console.Write("Digite o ID da disciplina da Disciplina: ");
+            Console.Write("Digite o ID da disciplina: ");
             int idDisciplinaTarefaAtualizar = int.Parse(Console.ReadLine()!);
 
             string novoTitulo;
