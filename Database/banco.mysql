@@ -1,0 +1,90 @@
+
+-- ORGANIZADOR - SISTEMA DE TAREFAS ESCOLARES
+
+
+
+CREATE DATABASE IF NOT EXISTS organizador
+CHARACTER SET utf8mb4
+COLLATE utf8mb4_unicode_ci;
+
+USE organizador;
+
+-- TABELA: ALUNOS
+
+
+CREATE TABLE IF NOT EXISTS alunos (
+    id INT NOT NULL AUTO_INCREMENT,
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(150),
+
+    PRIMARY KEY (id),
+    UNIQUE KEY uq_alunos_email (email)
+) ENGINE=InnoDB;
+
+
+-- TABELA: DISCIPLINAS
+
+
+CREATE TABLE IF NOT EXISTS disciplinas (
+    id INT NOT NULL AUTO_INCREMENT,
+    nome VARCHAR(100) NOT NULL,
+    professor VARCHAR(100),
+    aluno_id INT NOT NULL,
+
+    PRIMARY KEY (id),
+
+    CONSTRAINT fk_disciplinas_alunos
+        FOREIGN KEY (aluno_id)
+        REFERENCES alunos(id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+
+-- TABELA: TAREFAS
+
+
+CREATE TABLE IF NOT EXISTS tarefas (
+    id INT NOT NULL AUTO_INCREMENT,
+    titulo VARCHAR(150) NOT NULL,
+    descricao TEXT,
+    tipo VARCHAR(50) NOT NULL,
+    data_entrega DATE NOT NULL,
+    status VARCHAR(30) NOT NULL DEFAULT 'Pendente',
+    aluno_id INT NOT NULL,
+    disciplina_id INT,
+
+    PRIMARY KEY (id),
+
+    CONSTRAINT fk_tarefas_alunos
+        FOREIGN KEY (aluno_id)
+        REFERENCES alunos(id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+
+    CONSTRAINT fk_tarefas_disciplinas
+        FOREIGN KEY (disciplina_id)
+        REFERENCES disciplinas(id)
+        ON UPDATE CASCADE
+        ON DELETE SET NULL
+) ENGINE=InnoDB;
+
+
+-- VERIFICAR TABELAS CRIADAS
+
+
+SHOW TABLES;
+
+DESCRIBE alunos;
+DESCRIBE disciplinas;
+DESCRIBE tarefas;
+
+
+-- CONSULTAS DE LISTAGEM
+
+
+SELECT * FROM alunos;
+
+SELECT * FROM disciplinas;
+
+SELECT * FROM tarefas;
