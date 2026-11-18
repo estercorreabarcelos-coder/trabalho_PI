@@ -108,7 +108,6 @@ case 1:
     // CADASTRAR ALUNO
     alunoService.CadastrarAluno(nome, email, senha);
 
-    Console.WriteLine("\nAluno cadastrado com sucesso!");
 
     Console.WriteLine("\nPressione qualquer tecla para continuar...");
     Console.ReadKey();
