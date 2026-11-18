@@ -250,7 +250,7 @@ while (opcao != 15)
             Console.Write("Digite a descrição da tarefa: ");
             string descricaoTarefa   = Console.ReadLine() ?? "";
 
-            Console.Write("Digite o tipo da tarefa: ");
+            Console.Write("Digite o tipo da tarefa(Ex: Trabalho, Prova, Atividade, etc): ");
             string tipo = Console.ReadLine() ?? "";
 
             Console.Write("Digite o prazo de entrega (dd/mm/yyyy): ");
@@ -295,20 +295,80 @@ while (opcao != 15)
             Console.Write("Digite o ID da disciplina da Disciplina: ");
             int idDisciplinaTarefaAtualizar = int.Parse(Console.ReadLine()!);
 
-            Console.Write("Novo Título da Tarefa: ");
-            string novoTitulo = Console.ReadLine()!;
+            string novoTitulo;
 
-            Console.Write("Nova Descrição da Tarefa: ");
-            string novaDescricao = Console.ReadLine()!;
+            do
+            {
+                Console.Write("Novo Título da Tarefa: ");
+                novoTitulo = Console.ReadLine()!;
+                if (string.IsNullOrWhiteSpace(novoTitulo))
+                {
+                    Console.WriteLine("O título não pode ser vazio. Por favor, digite um título válido.");
+                }
+            } while (string.IsNullOrWhiteSpace(novoTitulo));
 
-            Console.Write("Novo Tipo da Tarefa: ");
-            string novoTipo = Console.ReadLine()!;
+            string novaDescricao;
 
-            Console.Write("Digite o prazo de entrega (dd/mm/yyyy): ");
-            DateTime novoPrazoEntrega = DateTime.Parse(Console.ReadLine()!);
-            Console.Write("Novo Status da Tarefa (Pendente/Concluída): ");
-            string novoStatus = Console.ReadLine()!;
+            do
+            {
+                Console.Write("Nova Descrição da Tarefa: ");
+                novaDescricao = Console.ReadLine()!;
+                if (string.IsNullOrWhiteSpace(novaDescricao))
+                {
+                    Console.WriteLine("A descrição não pode ser vazia. Por favor, digite uma descrição válida.");
+                }
+            } while (string.IsNullOrWhiteSpace(novaDescricao));
 
+            string novoTipo;
+
+            do
+            {
+                Console.Write("Novo Tipo da Tarefa(EX: Trabalho, Prova, Atividade, etc): ");
+                novoTipo = Console.ReadLine()!;
+                if (string.IsNullOrWhiteSpace(novoTipo))
+                {
+                    Console.WriteLine("O tipo não pode ser vazio. Por favor, digite um tipo válido.");
+                }
+            } while (string.IsNullOrWhiteSpace(novoTipo));
+
+            DateTime novoPrazoEntrega;
+
+            while (true)
+            {
+                Console.WriteLine("Digite o novo prazo de entrega da tarefa (formato: dd/MM/yyyy): ");
+                if (DateTime.TryParse(Console.ReadLine(), out novoPrazoEntrega))
+                {
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Data inválida, por favor, tente novamente.");
+                }
+
+            }
+            
+            string novoStatus;
+
+            while (true)
+            {
+                Console.Write("Digite o novo status da tarefa (Pendente, Concluída): ");
+                string statusdigitado = Console.ReadLine()!;
+                if (statusdigitado.Equals( "Pendente" , StringComparison.OrdinalIgnoreCase))
+                {
+                    novoStatus = "Pendente";
+                    break;
+                }
+                else if (statusdigitado.Equals( "Concluída" , StringComparison.OrdinalIgnoreCase))
+                {
+                    novoStatus = "Concluída";
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Status inválido. Por favor, digite 'Pendente' ou 'Concluída'.");
+                }
+
+            }
             tarefaService.AtualizarTarefa(
                 idTarefaAtualizar,
                 idDisciplinaTarefaAtualizar,
@@ -330,7 +390,7 @@ while (opcao != 15)
 
             tarefaService.ExcluirTarefa(idTarefaExcluir, idDisciplinaTarefaExcluir);
             break;
-            
+
         case 15:
             Console.WriteLine("Você estásaindodo ORGANIZAÊ, ATÉ A PRÓXIMA!...");
             break;

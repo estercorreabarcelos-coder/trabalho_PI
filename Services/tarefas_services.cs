@@ -88,4 +88,18 @@ public class TarefaServices
             Console.WriteLine("Tarefa não encontrada.");
         }
     }
+
+    public void ConcluirTrefa(int idTarefa, int idDisciplina)
+    {
+        foreach (Tarefa tarefa in tarefas)
+        {
+            if (tarefa.IdTarefa == idTarefa && tarefa.IdDisciplina == idDisciplina)
+            {
+                tarefa.Status = "Concluída";
+                Console.WriteLine("Tarefa concluída com sucesso!");
+                return;
+            }
+        }
+        Console.WriteLine("Tarefa não encontrada.");
+    }
 }
