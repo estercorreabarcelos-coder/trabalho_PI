@@ -44,23 +44,77 @@ while (opcao != 15)
 
     switch (opcao)
     {
-        case 1:
-            
-            Console.Clear();
-            Console.WriteLine(" ======= CADASTRO DE ALUNO ======= ");
-            Console.Write("Nome: ");
-            string nome = Console.ReadLine() ?? "";
-            Console.Write("Email: ");
-            string email = Console.ReadLine() ?? "";
-            Console.Write("Senha: ");
-            string senha = Console.ReadLine() ?? "";
+        
+case 1:
 
-            alunoService.CadastrarAluno(nome, email, senha);
-            
-            Console.WriteLine("\nPressione qualquer tecla para continuar...");
-            Console.ReadKey();
-            
+    Console.Clear();
+    Console.WriteLine(" ======= CADASTRO DE ALUNO ======= ");
+
+    Console.Write("Nome: ");
+    string nome = Console.ReadLine() ?? "";
+
+    // VALIDAÇÃO DO EMAIL
+    string email;
+
+    do
+    {
+        Console.Write("Email: ");
+        email = (Console.ReadLine() ?? "").Trim();
+
+        string[] partes = email.Split('@');
+
+        bool emailValido =
+            partes.Length == 2 &&
+            partes[0].Length > 0 &&
+            !partes[0].Contains(' ') &&
+            (
+                partes[1].Equals("gmail.com", StringComparison.OrdinalIgnoreCase) ||
+                partes[1].Equals("hotmail.com", StringComparison.OrdinalIgnoreCase) ||
+                partes[1].Equals("organizaê.com", StringComparison.OrdinalIgnoreCase)
+            );
+
+        if (!emailValido)
+        {
+            Console.WriteLine("\nEmail inválido!");
+            Console.WriteLine("Utilize @gmail.com, @hotmail.com ou @organizaê.com.");
+            Console.WriteLine("Digite novamente.\n");
+        }
+        else
+        {
             break;
+        }
+
+    } while (true);
+
+
+    // VALIDAÇÃO DA SENHA
+    string senha;
+
+    do
+    {
+        Console.Write("Senha: ");
+        senha = Console.ReadLine() ?? "";
+
+        if (senha.Length < 8)
+        {
+            Console.WriteLine("\nSenha com dígitos insuficientes!");
+            Console.WriteLine("A senha deve possuir pelo menos 8 caracteres.");
+            Console.WriteLine("Digite novamente.\n");
+        }
+
+    } while (senha.Length < 8);
+
+
+    // CADASTRAR ALUNO
+    alunoService.CadastrarAluno(nome, email, senha);
+
+    Console.WriteLine("\nAluno cadastrado com sucesso!");
+
+    Console.WriteLine("\nPressione qualquer tecla para continuar...");
+    Console.ReadKey();
+
+    break;
+
 
         case 2:
 
