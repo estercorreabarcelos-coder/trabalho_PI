@@ -55,7 +55,7 @@ public class AlunoService
             Console.WriteLine("Nenhum aluno não encontrado.");
         }
     }
-        public void AtualizarAluno(int id, string novoNome, string novoEmail, string novaSenha)
+        public bool AtualizarAluno(int id, string novoNome, string novoEmail, string novaSenha)
         {
             Aluno? aluno = BuscarPorId(id);
             if (aluno != null)
@@ -64,10 +64,12 @@ public class AlunoService
                 aluno.Email = novoEmail;
                 aluno.Senha = novaSenha;
                 Console.WriteLine("Aluno atualizado com sucesso!");
+                return true;
             }
             else
             {
                 Console.WriteLine("Aluno não encontrado.");
+                return false;
             }
         }
 
