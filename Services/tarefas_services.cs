@@ -119,4 +119,37 @@ public class TarefaServices
         }
         Console.WriteLine("Tarefa não encontrada.");
     }
+    public void ExibirPainel()
+    {
+        int pendentes = 0;
+        int concluidas = 0;
+        int atrasadas = 0;
+        int proximasDoPrazo = 0;
+
+        foreach (Tarefa tarefa in tarefas)
+        {
+            if(tarefa.Status == "Concluida")
+            {
+                concluidas++;
+            }
+            else if (tarefa.PrazoEntrega.Date < DateTime.Today)
+            {
+                atrasadas++;
+            }
+            else if((tarefa.PrazoEntrega.Date - DateTime.Today).Days <= 3)
+            {
+                proximasDoPrazo++;
+            }
+            else
+            {
+                pendentes++;
+            }
+        }
+
+        Console.WriteLine("\n------ PAINEL DE TAREFAS ----------");
+        Console.WriteLine("Pendentes: " + pendentes);
+        Console.WriteLine("Concluidas: " + concluidas);
+        Console.WriteLine("Proximas do Prazo: " + proximasDoPrazo);
+        Console.WriteLine("Atrasadas: " + atrasadas);
+    }
 }
