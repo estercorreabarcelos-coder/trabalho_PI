@@ -152,4 +152,32 @@ public class TarefaServices
         Console.WriteLine("Proximas do Prazo: " + proximasDoPrazo);
         Console.WriteLine("Atrasadas: " + atrasadas);
     }
+
+    public void ListarTarefasPorStatus()
+    {
+        Console.WriteLine("\n ===== TAREFAS ATRASADAS =======");
+
+        foreach (Tarefa tarefa in tarefas)
+        {
+            if (tarefa.Status != "Concluida" && tarefa.PrazoEntrega.Date < DateTime.Today)
+            {
+                Console.WriteLine("Título: " + tarefa.Titulo);
+                Console.WriteLine("Prazo: " + tarefa.PrazoEntrega.ToShortDateString());
+                Console.WriteLine("========================");
+            }
+        }
+
+        Console.WriteLine("\n===== PRÓXIMAS DO PRAZO =====");
+        foreach (Tarefa tarefa in tarefas)
+        {
+            if (tarefa.Status != "Concluída" &&
+                tarefa.PrazoEntrega.Date >= DateTime.Today &&
+                (tarefa.PrazoEntrega.Date - DateTime.Today).Days <= 3)
+            {
+                Console.WriteLine("Título: " + tarefa.Titulo);
+                Console.WriteLine("Prazo: " + tarefa.PrazoEntrega.ToShortDateString());
+                Console.WriteLine("======================");
+            }
+        }
+    }
 }
