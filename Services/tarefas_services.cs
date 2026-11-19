@@ -32,7 +32,24 @@ public class TarefaServices
                 Console.WriteLine("Descrição: " + tarefa.Descricao);
                 Console.WriteLine("Tipo: " + tarefa.Tipo);;
                 Console.WriteLine("Prazo de Entrega: " + tarefa.PrazoEntrega);
-                Console.WriteLine("Status: " + tarefa.Status);
+                
+                string statusExibicao;
+
+                if (tarefa.Status == "Concluida")
+                {
+                    statusExibicao = "Concluida";
+                }
+                else if ((tarefa.PrazoEntrega.Date - DateTime.Today).Days <= 1)
+                {
+                    statusExibicao = "Proxima do prazo";
+                }
+                else
+                {
+                    statusExibicao = "No prazo";
+                }
+
+                Console.WriteLine("Status: " + statusExibicao);
+                
                 encontrada = true;
             }
         }
@@ -89,7 +106,7 @@ public class TarefaServices
         }
     }
 
-    public void ConcluirTrefa(int idTarefa, int idDisciplina)
+    public void ConcluirTarefa(int idTarefa, int idDisciplina)
     {
         foreach (Tarefa tarefa in tarefas)
         {
