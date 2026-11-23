@@ -14,7 +14,7 @@ Console.WriteLine(" ==================================================");
 Console.WriteLine("BEM-VINDO AO ORGANIZAÊ, O SEU ORGANIZADOR DE TAREFAS ESCOLARES!");
 Console.WriteLine("Aqui você poderá organizar suas tarefas de forma simples e eficiente.");
 Console.WriteLine("Vamos começar! Por favor, escolha uma das opções abaixo:");
-while (opcao != 17)
+while (opcao != 18)
 {
     if (!isFirstTime)
     {
@@ -39,7 +39,8 @@ while (opcao != 17)
     Console.WriteLine("14: Excluir Tarefa");
     Console.WriteLine("15: Concluir Tarefa");
     Console.WriteLine("16: Painel de tarefas");
-    Console.WriteLine("17: Sair");
+    Console.WriteLine("17 - Listar tarefas por situação");
+    Console.WriteLine("18: Sair");
     Console.Write("Escolha uma opção: ");
 
 
@@ -550,6 +551,10 @@ while (opcao != 17)
             break;
 
         case 17:
+            tarefaService.ListarTarefasPorStatus();
+            break;
+
+        case 18:
             Console.WriteLine("Você estásaindodo ORGANIZAÊ, ATÉ A PRÓXIMA!...");
             break;
 
