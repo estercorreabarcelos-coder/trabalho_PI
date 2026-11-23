@@ -1,4 +1,5 @@
-﻿AlunoService alunoService = new AlunoService();
+﻿using MySqlConnector;
+AlunoService alunoService = new AlunoService();
 
 DisciplinaService disciplinaService = new DisciplinaService();
 
@@ -563,4 +564,23 @@ while (opcao != 18)
             Console.ReadKey();
             break;
     }
+}
+
+
+
+
+Conexao banco = new Conexao();
+
+try
+{
+    using (MySqlConnection conexao = banco.Conectar())
+    {
+        conexao.Open();
+
+        Console.WriteLine("Conectado ao MySQL!");
+    }
+}
+catch (Exception erro)
+{
+    Console.WriteLine("Erro: " + erro.Message);
 }
