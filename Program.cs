@@ -143,12 +143,18 @@ while (opcao != 18)
             Console.Clear();
             Console.WriteLine(" ======= LISTA DE ALUNOS ======= ");
             alunoService.ListarAlunos();
-
+            if (reader.HasRows == false)
+            {
+            Console.WriteLine("\nNenhum aluno cadastrado!");
+        
+            }
+            else
+            {
             Console.WriteLine("\nPressione qualquer tecla para continuar...");
             Console.ReadKey();
 
             break;
-
+            }
         case 3:
             Console.WriteLine(" ======= BUSCAR ALUNO POR ID ======= ");
             Console.Write("Digite o ID do aluno: ");
