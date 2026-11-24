@@ -60,8 +60,21 @@ while (opcao != 18)
             Console.Clear();
             Console.WriteLine(" ======= CADASTRO DE ALUNO ======= ");
 
-            Console.Write("Nome: ");
-            string nome = Console.ReadLine() ?? "";
+            // VALIDAÇÃO DO NOME
+            string nome;
+
+            do
+            {
+                Console.Write("Nome: ");
+                nome = (Console.ReadLine() ?? "").Trim();
+
+            if (string.IsNullOrWhiteSpace(nome))
+            {
+                Console.WriteLine("\nNome não pode ficar em branco!");
+                Console.WriteLine("Digite novamente.\n");
+            }
+
+            } while (string.IsNullOrWhiteSpace(nome));
 
             // VALIDAÇÃO DO EMAIL
             string email;
