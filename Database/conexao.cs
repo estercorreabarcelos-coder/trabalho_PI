@@ -13,5 +13,3 @@ public class Conexao
         return new MySqlConnection(conexaoString);
     }
 }
-
-
