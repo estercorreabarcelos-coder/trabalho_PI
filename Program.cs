@@ -36,7 +36,7 @@ while (opcao != 18)
     Console.WriteLine("8: Listar Disciplinas");
     Console.WriteLine("9: Atualizar Disciplina");
     Console.WriteLine("10: Excluir Disciplina");
-    Console.WriteLine("\n ==== OPÇÕES ARA TAREFA ====");
+    Console.WriteLine("\n ==== OPÇÕES PARA TAREFA ====");
     Console.WriteLine("11: Cadastrar Tarefa");
     Console.WriteLine("12: Listar Tarefas");
     Console.WriteLine("13: Atualizar Tarefa");
