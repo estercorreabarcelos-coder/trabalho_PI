@@ -19,7 +19,7 @@ while (opcao != 18)
 {
     if (!isFirstTime)
     {
-        Console.WriteLine("\n==================================================");
+        Console.WriteLine("\n ==================================================");
         Console.WriteLine(" |  ORGANIZAÊ - ORGANIZADOR DE TAREFAS ESCOLARES  | ");
         Console.WriteLine(" ==================================================");
     }
@@ -92,6 +92,7 @@ while (opcao != 18)
                 Console.WriteLine("\nNome não pode ficar em branco!");
                 Console.WriteLine("Digite novamente.\n");
             }
+          break;
 
             } while (string.IsNullOrWhiteSpace(nome));
 
