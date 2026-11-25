@@ -179,5 +179,30 @@ public class TarefaServices
                 Console.WriteLine("======================");
             }
         }
+    
+        Console.WriteLine("\n===== TAREFAS PENDENTES =====");
+
+        foreach (Tarefa tarefa in tarefas)
+        {
+            if (tarefa.Status != "Concluída" &&
+                tarefa.PrazoEntrega.Date > DateTime.Today.AddDays(3))
+            {
+                Console.WriteLine("Título: " + tarefa.Titulo);
+                Console.WriteLine("Prazo: " + tarefa.PrazoEntrega.ToShortDateString());
+                Console.WriteLine("--------------------");
+            }
+        }
+
+        Console.WriteLine("\n===== TAREFAS CONCLUÍDAS =====");
+
+        foreach (Tarefa tarefa in tarefas)
+        {
+            if (tarefa.Status == "Concluída")
+            {
+                Console.WriteLine("Título: " + tarefa.Titulo);
+                Console.WriteLine("Prazo: " + tarefa.PrazoEntrega.ToShortDateString());
+                Console.WriteLine("--------------------");
+            }
+        }
     }
 }
