@@ -19,7 +19,7 @@ while (opcao != 18)
 {
     if (!isFirstTime)
     {
-        Console.WriteLine(" ==================================================");
+        Console.WriteLine("\n==================================================");
         Console.WriteLine(" |  ORGANIZAÊ - ORGANIZADOR DE TAREFAS ESCOLARES  | ");
         Console.WriteLine(" ==================================================");
     }
