@@ -24,16 +24,19 @@ while (opcao != 18)
         Console.WriteLine(" ==================================================");
     }
     isFirstTime = false;
+    Console.WriteLine("\n==== OPÇÕES PARA ALUNO =====");
     Console.WriteLine("1: Cadastrar Aluno");
     Console.WriteLine("2: Listar Alunos");
     Console.WriteLine("3: Buscar Aluno por ID");
     Console.WriteLine("4: Buscar Aluno por Nome");
     Console.WriteLine("5: Atualizar Aluno");
     Console.WriteLine("6: Excluir Aluno");
+    Console.WriteLine("\n ==== OPÇÕES PARA DISCIPLINA =====");
     Console.WriteLine("7: Cadastrar Disciplina");
     Console.WriteLine("8: Listar Disciplinas");
     Console.WriteLine("9: Atualizar Disciplina");
     Console.WriteLine("10: Excluir Disciplina");
+    Console.WriteLine("\n ==== OPÇÕES ARA TAREFA ====");
     Console.WriteLine("11: Cadastrar Tarefa");
     Console.WriteLine("12: Listar Tarefas");
     Console.WriteLine("13: Atualizar Tarefa");
@@ -41,7 +44,7 @@ while (opcao != 18)
     Console.WriteLine("15: Concluir Tarefa");
     Console.WriteLine("16: Painel de tarefas");
     Console.WriteLine("17 - Listar tarefas por situação");
-    Console.WriteLine("18: Sair");
+    Console.WriteLine("\n18: Sair");
     Console.Write("Escolha uma opção: ");
 
 
