@@ -1,8 +1,6 @@
 
 -- ORGANIZADOR - SISTEMA DE TAREFAS ESCOLARES
 
-
-
 CREATE DATABASE IF NOT EXISTS organizador
 CHARACTER SET utf8mb4
 COLLATE utf8mb4_unicode_ci;
@@ -10,7 +8,6 @@ COLLATE utf8mb4_unicode_ci;
 USE organizador;
 
 -- TABELA: ALUNOS
-
 
 CREATE TABLE IF NOT EXISTS alunos (
     id INT NOT NULL AUTO_INCREMENT,
@@ -21,9 +18,7 @@ CREATE TABLE IF NOT EXISTS alunos (
     UNIQUE KEY uq_alunos_email (email)
 ) ENGINE=InnoDB;
 
-
 -- TABELA: DISCIPLINAS
-
 
 CREATE TABLE IF NOT EXISTS disciplinas (
     id INT NOT NULL AUTO_INCREMENT,
@@ -40,9 +35,7 @@ CREATE TABLE IF NOT EXISTS disciplinas (
         ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
-
 -- TABELA: TAREFAS
-
 
 CREATE TABLE IF NOT EXISTS tarefas (
     id INT NOT NULL AUTO_INCREMENT,
@@ -69,9 +62,7 @@ CREATE TABLE IF NOT EXISTS tarefas (
         ON DELETE SET NULL
 ) ENGINE=InnoDB;
 
-
 -- VERIFICAR TABELAS CRIADAS
-
 
 SHOW TABLES;
 
@@ -79,9 +70,7 @@ DESCRIBE alunos;
 DESCRIBE disciplinas;
 DESCRIBE tarefas;
 
-
 -- CONSULTAS DE LISTAGEM
-
 
 SELECT * FROM alunos;
 
