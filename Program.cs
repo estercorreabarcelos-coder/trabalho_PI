@@ -44,7 +44,7 @@ while (opcao != 18)
     Console.WriteLine("15: Concluir Tarefa");
     Console.WriteLine("16: Painel de tarefas");
     Console.WriteLine("17 - Listar tarefas por situação");
-    Console.WriteLine("18: Sair");
+    Console.WriteLine("\n18: Sair");
     Console.Write("Escolha uma opção: ");
 
 
