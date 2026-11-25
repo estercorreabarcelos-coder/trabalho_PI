@@ -59,8 +59,21 @@ while (opcao != 17)
             Console.Clear();
             Console.WriteLine(" ======= CADASTRO DE ALUNO ======= ");
 
+            string nome;
+
+        do
+        {
             Console.Write("Nome: ");
-            string nome = Console.ReadLine() ?? "";
+            nome = Console.ReadLine() ?? "";
+
+            if (nome.Trim().Length <= 1 || !nome.All(c => char.IsLetter(c) || char.IsWhiteSpace(c)))
+            {
+                Console.WriteLine("Nome inválido! Digite um nome com mais de 1 caractere, sem números ou caracteres especiais.");
+            }
+
+        } while (nome.Trim().Length <= 1 || !nome.All(c => char.IsLetter(c) || char.IsWhiteSpace(c)));
+
+    
 
             // VALIDAÇÃO DO EMAIL
             string email;
