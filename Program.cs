@@ -1,5 +1,12 @@
 ﻿using MySqlConnector;
+using trabalho_PI.Database;
+
+Conexao conexao = new Conexao();
+conexao.TestarConexao();
+
 AlunoService alunoService = new AlunoService();
+
+Aluno? alunoLogado = null;
 
 DisciplinaService disciplinaService = new DisciplinaService();
 
@@ -7,9 +14,101 @@ TarefaServices tarefaService = new TarefaServices();
 
 int opcao = 0;
 bool isFirstTime = true;
+int opcaoAcesso = 0;
+
+while (opcaoAcesso != 1 && opcaoAcesso != 2)
+{
+    Console.Clear();
+
+    Console.WriteLine(" ==================================================");
+    Console.WriteLine(" |  ORGANIZAÊ - ORGANIZADOR DE TAREFAS ESCOLARES  | ");
+    Console.WriteLine(" ==================================================");
+    Console.WriteLine("BEM-VINDO AO ORGANIZAÊ, O SEU ORGANIZADOR DE TAREFAS ESCOLARES!");
+    Console.WriteLine("Aqui você poderá organizar suas tarefas de forma simples e eficiente.");
+    Console.WriteLine("Vamos começar! Por favor, escolha uma das opções abaixo:");
+    Console.WriteLine("\n1 - Entrar");
+    Console.WriteLine("2 - Cadastrar-se");
+    Console.Write("\nEscolha uma opção: ");
+
+    if (!int.TryParse(Console.ReadLine(), out opcaoAcesso) ||
+        (opcaoAcesso != 1 && opcaoAcesso != 2))
+    {
+        Console.WriteLine("Opção inválida!");
+        Console.ReadKey();
+        opcaoAcesso = 0;
+    }
+}
+
+if (opcaoAcesso == 2)
+{
+    Console.Clear();
+    Console.WriteLine("======= CADASTRO DE ALUNO =======");
+
+    Console.Write("Nome: ");
+    string nomeCadastro = Console.ReadLine() ?? "";
+
+    Console.Write("Email: ");
+    string emailCadastro = Console.ReadLine() ?? "";
+
+    string senhaCadastro;
+
+    do
+    {
+        Console.Write("Senha (mínimo 8 caracteres): ");
+        senhaCadastro = Console.ReadLine() ?? "";
+
+        if (senhaCadastro.Length < 8)
+        {
+            Console.WriteLine("A senha precisa ter pelo menos 8 caracteres!");
+        }
+
+    } while (senhaCadastro.Length < 8);
+
+    alunoService.CadastrarAluno(nomeCadastro, emailCadastro, senhaCadastro);
+
+    Console.WriteLine("\nCadastro realizado! Agora faça seu login.");
+    Console.ReadKey();
+
+    opcaoAcesso = 1;
+}
+
+if (opcaoAcesso == 1)
+{
+    bool loginRealizado = false;
+
+    while (!loginRealizado)
+    {
+        
+        Console.Clear();
+        Console.WriteLine("======= LOGIN =======");
+
+        Console.Write("Email: ");
+        string emailLogin = Console.ReadLine() ?? "";
+
+        Console.Write("Senha: ");
+        string senhaLogin = Console.ReadLine() ?? "";
+
+        alunoLogado = alunoService.Login(emailLogin, senhaLogin);
+
+        if (alunoLogado == null)
+        {
+            Console.WriteLine("\nEmail ou senha incorretos, ou conta inativa.");
+            Console.WriteLine("Tente novamente.");
+            Console.ReadKey();
+        }
+        else
+        {
+            Console.WriteLine($"\nBem-Vindo(a), {alunoLogado.Nome}!");
+            loginRealizado = true;
+            Console.ReadKey();
+        }
+    }
+}
+
+
 
 Console.Clear();
-Console.WriteLine(" ==================================================");
+Console.WriteLine(" \n=================================================");
 Console.WriteLine(" |  ORGANIZAÊ - ORGANIZADOR DE TAREFAS ESCOLARES  | ");
 Console.WriteLine(" ==================================================");
 Console.WriteLine("BEM-VINDO AO ORGANIZAÊ, O SEU ORGANIZADOR DE TAREFAS ESCOLARES!");
@@ -58,11 +157,11 @@ while (opcao != 18)
 
     switch (opcao)
     {
-
+        
         case 1:
 
             Console.Clear();
-            Console.WriteLine(" ======= CADASTRO DE ALUNO ======= ");
+            Console.WriteLine("\n ======= CADASTRO DE ALUNO ======= ");
 
             string nome;
 
@@ -75,26 +174,8 @@ while (opcao != 18)
             {
                 Console.WriteLine("Nome inválido! Digite um nome com mais de 1 caractere, sem números ou caracteres especiais.");
             }
-
+        
         } while (nome.Trim().Length <= 1 || !nome.All(c => char.IsLetter(c) || char.IsWhiteSpace(c)));
-
-
-            // VALIDAÇÃO DO NOME
-           
-
-            do
-            {
-                Console.Write("Nome: ");
-                nome = (Console.ReadLine() ?? "").Trim();
-
-            if (string.IsNullOrWhiteSpace(nome))
-            {
-                Console.WriteLine("\nNome não pode ficar em branco!");
-                Console.WriteLine("Digite novamente.\n");
-            }
-          break;
-
-            } while (string.IsNullOrWhiteSpace(nome));
 
             // VALIDAÇÃO DO EMAIL
             string email;
@@ -323,22 +404,23 @@ while (opcao != 18)
 
         case 7:
             Console.WriteLine("======= CADASTRO DE DISCIPLINA ======= ");
-            Console.Write("ID do Aluno: ");
-            if (int.TryParse(Console.ReadLine(), out int idAluno))
-            {
-                Console.Write("Nome da Disciplina: ");
-                string nomeDisciplina = Console.ReadLine() ?? "";
+            int idAluno = alunoLogado!.IdAluno;
 
-                Console.Write("Descrição da Disciplina: ");
-                string descricaoDisciplina = Console.ReadLine() ?? "";
+            Console.WriteLine($"Aluno: {alunoLogado.Nome}");
+            Console.WriteLine($"ID: {idAluno}");
+            
+            Console.Write("Nome da Disciplina: ");
+            string nomeDisciplina = Console.ReadLine() ?? "";
 
-                disciplinaService.CadastrarDisciplina(
-                    nomeDisciplina,
-                    descricaoDisciplina,
-                    idAluno
-                );
-            }
-            else
+            Console.Write("Descrição da Disciplina: ");
+            string descricaoDisciplina = Console.ReadLine() ?? "";
+
+            disciplinaService.CadastrarDisciplina(
+                nomeDisciplina,
+                descricaoDisciplina,
+                idAluno
+            );
+            
             {
                 Console.WriteLine("ID inválido. Por favor, digite um número.");
             }
@@ -346,18 +428,20 @@ while (opcao != 18)
             break;
 
         case 8:
-            Console.WriteLine("======= LISTA DE DISCIPLINAS ======= ");
-            Console.Write("Digite o ID do aluno para listar suas disciplinas: ");
-            if (int.TryParse(Console.ReadLine(), out int idAlunoLista))
-            {
-                disciplinaService.ListarDisciplinas(idAlunoLista);
-            }
-            else
-            {
-                Console.WriteLine("ID inválido. Por favor, digite um número.");
-            }
-            Console.ReadKey();
-            break;
+        {
+        Console.WriteLine("======= LISTA DE DISCIPLINAS =======");
+
+        int idAlunoLista = alunoLogado!.IdAluno;
+
+        Console.WriteLine($"Disciplinas de: {alunoLogado.Nome}");
+
+        disciplinaService.ListarDisciplinas(idAlunoLista);
+
+        Console.WriteLine("\nPressione qualquer tecla para continuar...");
+        Console.ReadKey();
+
+        break;
+        }
 
         case 9:
             Console.WriteLine("======= ATUALIZAR DISCIPLINA ======= ");
@@ -599,21 +683,3 @@ while (opcao != 18)
     }
 }
 
-
-
-
-Conexao banco = new Conexao();
-
-try
-{
-    using (MySqlConnection conexao = banco.Conectar())
-    {
-        conexao.Open();
-
-        Console.WriteLine("Conectado ao MySQL!");
-    }
-}
-catch (Exception erro)
-{
-    Console.WriteLine("Erro: " + erro.Message);
-}
