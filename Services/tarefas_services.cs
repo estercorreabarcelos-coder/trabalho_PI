@@ -24,8 +24,8 @@ public class TarefaServices
                     conn.Open();
 
                     string sql = @"INSERT INTO tarefas
-                        (titulo, descricao, tipo, data_entrega, status, aluno_id, disciplina_id)
-                        SELECT @titulo, @descricao, @tipo, @prazo, 'Pendente', @alunoId, @disciplinaId
+                        (titulo, descricao, tipo, data_cadastro, data_entrega, status, aluno_id, disciplina_id)
+                        SELECT @titulo, @descricao, @tipo, NOW(), @prazo, 'Pendente', @alunoId, @disciplinaId
                         FROM disciplinas
                         WHERE id = @disciplinaId AND aluno_id = @alunoId";
 

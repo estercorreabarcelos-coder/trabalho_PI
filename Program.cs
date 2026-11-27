@@ -24,9 +24,9 @@ while (!encerrarPrograma)
         Console.WriteLine(" ==================================================");
         Console.WriteLine(" |  ORGANIZAÊ - ORGANIZADOR DE TAREFAS ESCOLARES  |");
         Console.WriteLine(" ==================================================");
-        Console.WriteLine("BEM-VINDO AO ORGANIZAÊ!");
+        Console.WriteLine("BEM-VINDO AO ORGANIZAÊ, O SEU ORGANIZADOR DE TAREFAS ESCOLARES!");
         Console.WriteLine("Aqui você poderá organizar suas tarefas de forma simples e eficiente.");
-
+        Console.WriteLine("Vamos começar! Por favor, escolha uma das opções abaixo:");
         Console.WriteLine("\n1 - Entrar");
         Console.WriteLine("2 - Cadastrar-se");
         Console.WriteLine("0 - Sair");
@@ -246,12 +246,27 @@ while (!encerrarPrograma)
             {
                 Console.Clear();
                 Console.WriteLine("======= CADASTRO DE DISCIPLINA =======");
+                Console.WriteLine("Digite 0 em qualquer campo para cancelar.");
 
-                Console.Write("Nome da Disciplina: ");
+                Console.Write("\nNome da Disciplina: ");
                 string nomeDisciplina = Console.ReadLine() ?? "";
+
+                if (nomeDisciplina == "0")
+                {
+                    Console.WriteLine("\nOperação cancelada.");
+                    Console.ReadKey();
+                    break;
+                }
 
                 Console.Write("Descrição da Disciplina: ");
                 string descricaoDisciplina = Console.ReadLine() ?? "";
+
+                if (descricaoDisciplina == "0")
+                {
+                    Console.WriteLine("\nOperação cancelada.");
+                    Console.ReadKey();
+                    break;
+                }
 
                 disciplinaService.CadastrarDisciplina(
                     nomeDisciplina,
@@ -267,6 +282,15 @@ while (!encerrarPrograma)
             {
                 Console.Clear();
                 Console.WriteLine("======= MINHAS DISCIPLINAS =======");
+                Console.WriteLine("Digite 0 para voltar ao menu principal.");
+                Console.Write("\nPressione ENTER para listar ou digite 0: ");
+
+                string escolha = Console.ReadLine() ?? "";
+
+                if (escolha == "0")
+                {
+                    break;
+                }
 
                 disciplinaService.ListarDisciplinas(idAlunoLogado);
 
@@ -279,41 +303,66 @@ while (!encerrarPrograma)
             {
                 Console.Clear();
                 Console.WriteLine("======= ATUALIZAR DISCIPLINA =======");
+                Console.WriteLine("Digite 0 em qualquer campo para cancelar.");
 
-                Console.Write("Digite o ID da disciplina: ");
+                Console.Write("\nDigite o ID da disciplina: ");
+                string entradaId = Console.ReadLine() ?? "";
 
-                if (int.TryParse(Console.ReadLine(), out int idDisciplinaAtualizar))
+                if (entradaId == "0")
                 {
-                    Console.Write("Novo Nome da Disciplina: ");
-                    string novoNomeDisciplina = Console.ReadLine() ?? "";
-
-                    Console.Write("Nova Descrição da Disciplina: ");
-                    string novaDescricaoDisciplina = Console.ReadLine() ?? "";
-
-                    disciplinaService.AtualizarDisciplina(
-                        idDisciplinaAtualizar,
-                        idAlunoLogado,
-                        novoNomeDisciplina,
-                        novaDescricaoDisciplina
-                    );
+                    break;
                 }
-                else
+
+                if (!int.TryParse(entradaId, out int idDisciplinaAtualizar))
                 {
                     Console.WriteLine("ID inválido!");
+                    Console.ReadKey();
+                    break;
                 }
+
+                Console.Write("Novo Nome da Disciplina: ");
+                string novoNomeDisciplina = Console.ReadLine() ?? "";
+
+                if (novoNomeDisciplina == "0")
+                {
+                    break;
+                }
+
+                Console.Write("Nova Descrição da Disciplina: ");
+                string novaDescricaoDisciplina = Console.ReadLine() ?? "";
+
+                if (novaDescricaoDisciplina == "0")
+                {
+                    break;
+                }
+
+                disciplinaService.AtualizarDisciplina(
+                    idDisciplinaAtualizar,
+                    idAlunoLogado,
+                    novoNomeDisciplina,
+                    novaDescricaoDisciplina
+                );
 
                 Console.ReadKey();
                 break;
             }
-
             case 4:
             {
                 Console.Clear();
                 Console.WriteLine("======= EXCLUIR DISCIPLINA =======");
+                Console.WriteLine("Digite 0 para cancelar e voltar ao menu principal.");
 
-                Console.Write("Digite o ID da disciplina: ");
+                Console.Write("\nDigite o ID da disciplina: ");
+                string entradaId = Console.ReadLine() ?? "";
 
-                if (int.TryParse(Console.ReadLine(), out int idDisciplinaExcluir))
+                if (entradaId == "0")
+                {
+                    Console.WriteLine("\nOperação cancelada.");
+                    Console.ReadKey();
+                    break;
+                }
+
+                if (int.TryParse(entradaId, out int idDisciplinaExcluir))
                 {
                     disciplinaService.ExcluirDisciplina(
                         idDisciplinaExcluir,
@@ -329,45 +378,73 @@ while (!encerrarPrograma)
                 break;
             }
 
-            case 5:
+           case 5:
             {
                 Console.Clear();
                 Console.WriteLine("======= CADASTRO DE TAREFA =======");
+                Console.WriteLine("Digite 0 em qualquer campo para cancelar.");
 
-                Console.Write("Digite o título da tarefa: ");
+                Console.Write("\nDigite o título da tarefa: ");
                 string titulo = Console.ReadLine() ?? "";
+
+                if (titulo == "0")
+                {
+                    break;
+                }
 
                 Console.Write("Digite a descrição da tarefa: ");
                 string descricaoTarefa = Console.ReadLine() ?? "";
 
+                if (descricaoTarefa == "0")
+                {
+                    break;
+                }
+
                 Console.Write("Digite o tipo da tarefa: ");
                 string tipo = Console.ReadLine() ?? "";
 
-                Console.Write("Digite o prazo de entrega (dd/MM/yyyy): ");
-
-                if (DateTime.TryParse(Console.ReadLine(), out DateTime prazoEntrega))
+                if (tipo == "0")
                 {
-                    Console.Write("Digite o ID da disciplina: ");
+                    break;
+                }
 
-                    if (int.TryParse(Console.ReadLine(), out int idDisciplina))
-                    {
-                        tarefaService.CadastrarTarefa(
-                            titulo,
-                            descricaoTarefa,
-                            tipo,
-                            prazoEntrega,
-                            idDisciplina,
-                            idAlunoLogado
-                        );
-                    }
-                    else
-                    {
-                        Console.WriteLine("ID da disciplina inválido!");
-                    }
+                Console.Write("Digite o prazo de entrega (dd/MM/yyyy): ");
+                string entradaPrazo = Console.ReadLine() ?? "";
+
+                if (entradaPrazo == "0")
+                {
+                    break;
+                }
+
+                if (!DateTime.TryParse(entradaPrazo, out DateTime prazoEntrega))
+                {
+                    Console.WriteLine("Prazo de entrega inválido!");
+                    Console.ReadKey();
+                    break;
+                }
+
+                Console.Write("Digite o ID da disciplina: ");
+                string entradaDisciplina = Console.ReadLine() ?? "";
+
+                if (entradaDisciplina == "0")
+                {
+                    break;
+                }
+
+                if (int.TryParse(entradaDisciplina, out int idDisciplina))
+                {
+                    tarefaService.CadastrarTarefa(
+                        titulo,
+                        descricaoTarefa,
+                        tipo,
+                        prazoEntrega,
+                        idDisciplina,
+                        idAlunoLogado
+                    );
                 }
                 else
                 {
-                    Console.WriteLine("Prazo de entrega inválido!");
+                    Console.WriteLine("ID da disciplina inválido!");
                 }
 
                 Console.ReadKey();
@@ -378,10 +455,17 @@ while (!encerrarPrograma)
             {
                 Console.Clear();
                 Console.WriteLine("======= LISTA DE TAREFAS =======");
+                Console.WriteLine("Digite 0 para voltar ao menu principal.");
 
-                Console.Write("Digite o ID da disciplina: ");
+                Console.Write("\nDigite o ID da disciplina: ");
+                string entradaId = Console.ReadLine() ?? "";
 
-                if (int.TryParse(Console.ReadLine(), out int idDisciplinaLista))
+                if (entradaId == "0")
+                {
+                    break;
+                }
+
+                if (int.TryParse(entradaId, out int idDisciplinaLista))
                 {
                     tarefaService.ListarTarefas(
                         idDisciplinaLista,
@@ -401,10 +485,15 @@ while (!encerrarPrograma)
             {
                 Console.Clear();
                 Console.WriteLine("======= ATUALIZAR TAREFA =======");
+                Console.WriteLine("Digite 0 em qualquer campo para cancelar.");
 
-                Console.Write("Digite o ID da tarefa: ");
+                Console.Write("\nDigite o ID da tarefa: ");
+                string entradaTarefa = Console.ReadLine() ?? "";
 
-                if (!int.TryParse(Console.ReadLine(), out int idTarefaAtualizar))
+                if (entradaTarefa == "0")
+                    break;
+
+                if (!int.TryParse(entradaTarefa, out int idTarefaAtualizar))
                 {
                     Console.WriteLine("ID inválido!");
                     Console.ReadKey();
@@ -412,91 +501,93 @@ while (!encerrarPrograma)
                 }
 
                 Console.Write("Digite o ID da disciplina: ");
+                string entradaDisciplina = Console.ReadLine() ?? "";
 
-                if (!int.TryParse(Console.ReadLine(), out int idDisciplinaTarefaAtualizar))
+                if (entradaDisciplina == "0")
+                    break;
+
+                if (!int.TryParse(entradaDisciplina, out int idDisciplinaTarefaAtualizar))
                 {
                     Console.WriteLine("ID inválido!");
                     Console.ReadKey();
                     break;
                 }
 
-                string novoTitulo;
+                Console.Write("Novo Título da Tarefa: ");
+                string novoTitulo = Console.ReadLine() ?? "";
 
-                do
+                if (novoTitulo == "0")
+                    break;
+
+                if (string.IsNullOrWhiteSpace(novoTitulo))
                 {
-                    Console.Write("Novo Título da Tarefa: ");
-                    novoTitulo = Console.ReadLine() ?? "";
-
-                    if (string.IsNullOrWhiteSpace(novoTitulo))
-                    {
-                        Console.WriteLine("O título não pode ser vazio.");
-                    }
-
-                } while (string.IsNullOrWhiteSpace(novoTitulo));
-
-                string novaDescricao;
-
-                do
-                {
-                    Console.Write("Nova Descrição da Tarefa: ");
-                    novaDescricao = Console.ReadLine() ?? "";
-
-                    if (string.IsNullOrWhiteSpace(novaDescricao))
-                    {
-                        Console.WriteLine("A descrição não pode ser vazia.");
-                    }
-
-                } while (string.IsNullOrWhiteSpace(novaDescricao));
-
-                string novoTipo;
-
-                do
-                {
-                    Console.Write("Novo Tipo da Tarefa: ");
-                    novoTipo = Console.ReadLine() ?? "";
-
-                    if (string.IsNullOrWhiteSpace(novoTipo))
-                    {
-                        Console.WriteLine("O tipo não pode ser vazio.");
-                    }
-
-                } while (string.IsNullOrWhiteSpace(novoTipo));
-
-                DateTime novoPrazoEntrega;
-
-                while (true)
-                {
-                    Console.Write("Novo prazo de entrega (dd/MM/yyyy): ");
-
-                    if (DateTime.TryParse(Console.ReadLine(), out novoPrazoEntrega))
-                    {
-                        break;
-                    }
-
-                    Console.WriteLine("Data inválida. Tente novamente.");
+                    Console.WriteLine("O título não pode ser vazio.");
+                    Console.ReadKey();
+                    break;
                 }
+
+                Console.Write("Nova Descrição da Tarefa: ");
+                string novaDescricao = Console.ReadLine() ?? "";
+
+                if (novaDescricao == "0")
+                    break;
+
+                if (string.IsNullOrWhiteSpace(novaDescricao))
+                {
+                    Console.WriteLine("A descrição não pode ser vazia.");
+                    Console.ReadKey();
+                    break;
+                }
+
+                Console.Write("Novo Tipo da Tarefa: ");
+                string novoTipo = Console.ReadLine() ?? "";
+
+                if (novoTipo == "0")
+                    break;
+
+                if (string.IsNullOrWhiteSpace(novoTipo))
+                {
+                    Console.WriteLine("O tipo não pode ser vazio.");
+                    Console.ReadKey();
+                    break;
+                }
+
+                Console.Write("Novo prazo de entrega (dd/MM/yyyy): ");
+                string entradaPrazo = Console.ReadLine() ?? "";
+
+                if (entradaPrazo == "0")
+                    break;
+
+                if (!DateTime.TryParse(entradaPrazo, out DateTime novoPrazoEntrega))
+                {
+                    Console.WriteLine("Data inválida!");
+                    Console.ReadKey();
+                    break;
+                }
+
+                Console.Write("Novo status (Pendente ou Concluída): ");
+                string statusDigitado = Console.ReadLine() ?? "";
+
+                if (statusDigitado == "0")
+                    break;
 
                 string novoStatus;
 
-                while (true)
+                if (statusDigitado.Equals("Pendente", StringComparison.OrdinalIgnoreCase))
                 {
-                    Console.Write("Novo status (Pendente ou Concluída): ");
-                    string statusDigitado = Console.ReadLine() ?? "";
-
-                    if (statusDigitado.Equals("Pendente", StringComparison.OrdinalIgnoreCase))
-                    {
-                        novoStatus = "Pendente";
-                        break;
-                    }
-                    else if (
-                        statusDigitado.Equals("Concluída", StringComparison.OrdinalIgnoreCase) ||
-                        statusDigitado.Equals("Concluida", StringComparison.OrdinalIgnoreCase))
-                    {
-                        novoStatus = "Concluída";
-                        break;
-                    }
-
+                    novoStatus = "Pendente";
+                }
+                else if (
+                    statusDigitado.Equals("Concluída", StringComparison.OrdinalIgnoreCase) ||
+                    statusDigitado.Equals("Concluida", StringComparison.OrdinalIgnoreCase))
+                {
+                    novoStatus = "Concluída";
+                }
+                else
+                {
                     Console.WriteLine("Status inválido!");
+                    Console.ReadKey();
+                    break;
                 }
 
                 tarefaService.AtualizarTarefa(
@@ -518,21 +609,30 @@ while (!encerrarPrograma)
             {
                 Console.Clear();
                 Console.WriteLine("======= EXCLUIR TAREFA =======");
+                Console.WriteLine("Digite 0 em qualquer campo para cancelar.");
 
-                Console.Write("Digite o ID da tarefa: ");
+                Console.Write("\nDigite o ID da tarefa: ");
+                string entradaTarefa = Console.ReadLine() ?? "";
 
-                if (!int.TryParse(Console.ReadLine(), out int idTarefaExcluir))
+                if (entradaTarefa == "0")
+                    break;
+
+                if (!int.TryParse(entradaTarefa, out int idTarefaExcluir))
                 {
-                    Console.WriteLine("ID inválido!");
+                    Console.WriteLine("ID da tarefa inválido!");
                     Console.ReadKey();
                     break;
                 }
 
                 Console.Write("Digite o ID da disciplina: ");
+                string entradaDisciplina = Console.ReadLine() ?? "";
 
-                if (!int.TryParse(Console.ReadLine(), out int idDisciplinaTarefaExcluir))
+                if (entradaDisciplina == "0")
+                    break;
+
+                if (!int.TryParse(entradaDisciplina, out int idDisciplinaTarefaExcluir))
                 {
-                    Console.WriteLine("ID inválido!");
+                    Console.WriteLine("ID da disciplina inválido!");
                     Console.ReadKey();
                     break;
                 }
@@ -551,21 +651,30 @@ while (!encerrarPrograma)
             {
                 Console.Clear();
                 Console.WriteLine("======= CONCLUIR TAREFA =======");
+                Console.WriteLine("Digite 0 em qualquer campo para cancelar.");
 
-                Console.Write("Digite o ID da tarefa: ");
+                Console.Write("\nDigite o ID da tarefa: ");
+                string entradaTarefa = Console.ReadLine() ?? "";
 
-                if (!int.TryParse(Console.ReadLine(), out int idTarefa))
+                if (entradaTarefa == "0")
+                    break;
+
+                if (!int.TryParse(entradaTarefa, out int idTarefa))
                 {
-                    Console.WriteLine("ID inválido!");
+                    Console.WriteLine("ID da tarefa inválido!");
                     Console.ReadKey();
                     break;
                 }
 
                 Console.Write("Digite o ID da disciplina: ");
+                string entradaDisciplina = Console.ReadLine() ?? "";
 
-                if (!int.TryParse(Console.ReadLine(), out int idDisciplina))
+                if (entradaDisciplina == "0")
+                    break;
+
+                if (!int.TryParse(entradaDisciplina, out int idDisciplina))
                 {
-                    Console.WriteLine("ID inválido!");
+                    Console.WriteLine("ID da disciplina inválido!");
                     Console.ReadKey();
                     break;
                 }
@@ -583,7 +692,18 @@ while (!encerrarPrograma)
             case 10:
             {
                 Console.Clear();
+                Console.WriteLine("======= PAINEL DE TAREFAS =======");
+                Console.WriteLine("Digite 0 para voltar ao menu principal.");
+                Console.Write("\nPressione ENTER para visualizar o painel ou digite 0: ");
+
+                string escolha = Console.ReadLine() ?? "";
+
+                if (escolha == "0")
+                    break;
+
                 tarefaService.ExibirPainel(idAlunoLogado);
+
+                Console.WriteLine("\nPressione qualquer tecla para continuar...");
                 Console.ReadKey();
                 break;
             }
@@ -591,7 +711,18 @@ while (!encerrarPrograma)
             case 11:
             {
                 Console.Clear();
+                Console.WriteLine("======= TAREFAS POR SITUAÇÃO =======");
+                Console.WriteLine("Digite 0 para voltar ao menu principal.");
+                Console.Write("\nPressione ENTER para listar ou digite 0: ");
+
+                string escolha = Console.ReadLine() ?? "";
+
+                if (escolha == "0")
+                    break;
+
                 tarefaService.ListarTarefasPorStatus(idAlunoLogado);
+
+                Console.WriteLine("\nPressione qualquer tecla para continuar...");
                 Console.ReadKey();
                 break;
             }
@@ -602,9 +733,17 @@ while (!encerrarPrograma)
                 Console.WriteLine("======= EXCLUIR MINHA CONTA =======");
                 Console.WriteLine("Tem certeza de que deseja excluir sua conta?");
                 Console.WriteLine("Essa ação não poderá ser desfeita.");
+                Console.WriteLine("\nDigite 0 para voltar ao menu principal.");
 
                 Console.Write("\nDigite S para confirmar ou N para cancelar: ");
                 string confirmacao = Console.ReadLine() ?? "";
+
+                if (confirmacao == "0")
+                {
+                    Console.WriteLine("\nOperação cancelada.");
+                    Console.ReadKey();
+                    break;
+                }
 
                 if (confirmacao.Equals("S", StringComparison.OrdinalIgnoreCase))
                 {
@@ -646,7 +785,7 @@ Console.WriteLine("Obrigado por utilizar o ORGANIZAÊ!");
 Console.WriteLine("Até a próxima!");
 
 
-// LEITURA DA SENHA COM ASTERISCOS (SOMENTE NO LOGIN)
+// LEITURA DA SENHA COM ASTERISTICOS (SOMENTE NO LOGIN)
 string LerSenha()
 {
     string senha = "";
