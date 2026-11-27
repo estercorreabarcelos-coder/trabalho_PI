@@ -158,7 +158,7 @@ public class TarefaServices
                 using (MySqlCommand cmd = new MySqlCommand(sql, conn))
                 {
                     cmd.Parameters.AddWithValue("@titulo", novoTitulo);
-                    cmd.Parameters.AddWithValue("@descricao", novoDescricao);
+                    cmd.Parameters.AddWithValue("@descricao", novaDescricao);
                     cmd.Parameters.AddWithValue("@tipo", novoTipo);
                     cmd.Parameters.AddWithValue("@prazo", novoPrazoEntrega.Date);
                     cmd.Parameters.AddWithValue("@status", novoStatus);
@@ -336,7 +336,7 @@ public class TarefaServices
             Console.WriteLine("Erro ao exibir painel: " + ex.Message);
         }
     }
-    
+
     public void ListarTarefasPorStatus(int idAluno)
     {
         try
