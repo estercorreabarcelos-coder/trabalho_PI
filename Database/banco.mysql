@@ -1,5 +1,6 @@
-
--- ORGANIZADOR - SISTEMA DE TAREFAS ESCOLARES
+-- ==========================================
+-- ORGANIZAE - BANCO DE DADOS
+-- ==========================================
 
 CREATE DATABASE IF NOT EXISTS organizador
 CHARACTER SET utf8mb4
@@ -7,26 +8,29 @@ COLLATE utf8mb4_unicode_ci;
 
 USE organizador;
 
+-- ==========================================
 -- TABELA: ALUNOS
+-- ==========================================
 
 CREATE TABLE IF NOT EXISTS alunos (
-    id INT NOT NULL AUTO_INCREMENT,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
-    email VARCHAR(150),
-
-    PRIMARY KEY (id),
-    UNIQUE KEY uq_alunos_email (email)
+    email VARCHAR(150) NOT NULL UNIQUE,
+    senha_hash VARCHAR(255) NOT NULL,
+    data_cadastro DATETIME NOT NULL,
+    senha VARCHAR(255) NOT NULL,
+    status VARCHAR(20) NOT NULL DEFAULT 'Ativo'
 ) ENGINE=InnoDB;
 
+-- ==========================================
 -- TABELA: DISCIPLINAS
+-- ==========================================
 
 CREATE TABLE IF NOT EXISTS disciplinas (
-    id INT NOT NULL AUTO_INCREMENT,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
-    professor VARCHAR(100),
+    descricao TEXT,
     aluno_id INT NOT NULL,
-
-    PRIMARY KEY (id),
 
     CONSTRAINT fk_disciplinas_alunos
         FOREIGN KEY (aluno_id)
@@ -35,34 +39,32 @@ CREATE TABLE IF NOT EXISTS disciplinas (
         ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
+-- ==========================================
 -- TABELA: TAREFAS
+-- ==========================================
 
 CREATE TABLE IF NOT EXISTS tarefas (
-    id INT NOT NULL AUTO_INCREMENT,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     titulo VARCHAR(150) NOT NULL,
     descricao TEXT,
     tipo VARCHAR(50) NOT NULL,
+    data_cadastro DATETIME NOT NULL,
     data_entrega DATE NOT NULL,
     status VARCHAR(30) NOT NULL DEFAULT 'Pendente',
-    aluno_id INT NOT NULL,
-    disciplina_id INT,
-
-    PRIMARY KEY (id),
-
-    CONSTRAINT fk_tarefas_alunos
-        FOREIGN KEY (aluno_id)
-        REFERENCES alunos(id)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE,
+    disciplina_id INT NOT NULL,
 
     CONSTRAINT fk_tarefas_disciplinas
         FOREIGN KEY (disciplina_id)
         REFERENCES disciplinas(id)
         ON UPDATE CASCADE
-        ON DELETE SET NULL
+        ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
--- VERIFICAR TABELAS CRIADAS
+ALTER TABLE alunos
+ADD COLUMN senha_hash VARCHAR(255) NOT NULL DEFAULT '',
+ADD COLUMN data_cadastro DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ADD COLUMN status VARCHAR (20) NOT NULL DEFAULT 'Ativo',
+MODIFY COLUMN email VARCHAR (150) NOT NULL;
 
 SHOW TABLES;
 
@@ -70,10 +72,6 @@ DESCRIBE alunos;
 DESCRIBE disciplinas;
 DESCRIBE tarefas;
 
--- CONSULTAS DE LISTAGEM
-
 SELECT * FROM alunos;
-
 SELECT * FROM disciplinas;
-
 SELECT * FROM tarefas;
