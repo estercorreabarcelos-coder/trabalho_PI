@@ -336,56 +336,57 @@ public class TarefaServices
             Console.WriteLine("Erro ao exibir painel: " + ex.Message);
         }
     }
-    public void ListarTarefasPorStatus()
-    {
-        Console.WriteLine("\n ===== TAREFAS ATRASADAS =======");
-
-        foreach (Tarefa tarefa in tarefas)
-        {
-            if (tarefa.Status != "Concluida" && tarefa.PrazoEntrega.Date < DateTime.Today)
-            {
-                Console.WriteLine("Título: " + tarefa.Titulo);
-                Console.WriteLine("Prazo: " + tarefa.PrazoEntrega.ToShortDateString());
-                Console.WriteLine("========================");
-            }
-        }
-
-        Console.WriteLine("\n===== PRÓXIMAS DO PRAZO =====");
-        foreach (Tarefa tarefa in tarefas)
-        {
-            if (tarefa.Status != "Concluída" &&
-                tarefa.PrazoEntrega.Date >= DateTime.Today &&
-                (tarefa.PrazoEntrega.Date - DateTime.Today).Days <= 3)
-            {
-                Console.WriteLine("Título: " + tarefa.Titulo);
-                Console.WriteLine("Prazo: " + tarefa.PrazoEntrega.ToShortDateString());
-                Console.WriteLine("======================");
-            }
-        }
     
-        Console.WriteLine("\n===== TAREFAS PENDENTES =====");
-
-        foreach (Tarefa tarefa in tarefas)
+    public void ListarTarefasPorStatus(int idAluno)
+    {
+        try
         {
-            if (tarefa.Status != "Concluída" &&
-                tarefa.PrazoEntrega.Date > DateTime.Today.AddDays(3))
+            using (MySqlConnection conn = conexao.Conectar())
             {
-                Console.WriteLine("Título: " + tarefa.Titulo);
-                Console.WriteLine("Prazo: " + tarefa.PrazoEntrega.ToShortDateString());
-                Console.WriteLine("--------------------");
+                conn.Open();
+
+                string sql = @"SELECT titulo, data_entrega, status
+                            FROM tarefas
+                            WHERE aluno_id = @alunoId";
+
+                using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@alunoId", idAluno);
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        Console.WriteLine("\n===== TAREFAS ATRASADAS =====");
+
+                        bool encontrouAtrasada = false;
+
+                        while (reader.Read())
+                        {
+                            string titulo = reader["titulo"].ToString() ?? "";
+                            string status = reader["status"].ToString() ?? "";
+                            DateTime prazo = Convert.ToDateTime(reader["data_entrega"]);
+
+                            if (status != "Concluída" &&
+                                status != "Concluida" &&
+                                prazo.Date < DateTime.Today)
+                            {
+                                Console.WriteLine("Título: " + titulo);
+                                Console.WriteLine("Prazo: " + prazo.ToShortDateString());
+                                Console.WriteLine("--------------------");
+                                encontrouAtrasada = true;
+                            }
+                        }
+
+                        if (!encontrouAtrasada)
+                            Console.WriteLine("Nenhuma tarefa atrasada.");
+
+                        reader.Close();
+                    }
+                }
             }
         }
-
-        Console.WriteLine("\n===== TAREFAS CONCLUÍDAS =====");
-
-        foreach (Tarefa tarefa in tarefas)
+        catch (Exception ex)
         {
-            if (tarefa.Status == "Concluída")
-            {
-                Console.WriteLine("Título: " + tarefa.Titulo);
-                Console.WriteLine("Prazo: " + tarefa.PrazoEntrega.ToShortDateString());
-                Console.WriteLine("--------------------");
-            }
+            Console.WriteLine("Erro ao listar tarefas: " + ex.Message);
         }
     }
 }
