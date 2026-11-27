@@ -1,73 +1,157 @@
 using System.Collections.Generic;
 using System.Security.Principal;
+using MySql.Data.MySqlClient;
+using trabalho_PI.Database;
 using trabalho_PI.Models;
 
 public class DisciplinaService
 {
-   private List<Disciplina> disciplinas = new List<Disciplina>();
-   public void CadastrarDisciplina(string nome, string descricao, int idAluno)
-   {
-       Disciplina novaDisciplina = new Disciplina(nome, descricao, idAluno);
-       novaDisciplina.IdDisciplina = disciplinas.Count + 1;
-       disciplinas.Add(novaDisciplina);
-       Console.WriteLine("Disciplina cadastrada com sucesso!");
-   }
-   public void ListarDisciplinas(int idAluno)
-   {
-       bool encontrada = false;
-       foreach (Disciplina disciplina in disciplinas)
-       {
-           if (disciplina.IdAluno == idAluno)
-           {
-               Console.WriteLine("--------------------");
-               Console.WriteLine("ID: " + disciplina.IdDisciplina);
-               Console.WriteLine("Nome: " + disciplina.Nome);
-               Console.WriteLine("Descrição: " + disciplina.Descricao);
-               encontrada = true;
-           }
-       }
-       if (!encontrada)
-       {
-           Console.WriteLine("Nenhuma disciplina encontrada.");
-       }
-   }
-
-   public void AtualizarDisciplina(int IdDisciplina, int idAluno, string novoNome, string novaDescricao)
+    private Conexao conexao = new Conexao();
+    private List<Disciplina> disciplinas = new List<Disciplina>();
+    public void CadastrarDisciplina(string nome, string descricao, int idAluno)
     {
-        foreach (Disciplina disciplina in disciplinas)
+        try
         {
-            if (disciplina.IdDisciplina == IdDisciplina && disciplina.IdAluno == idAluno)
+            using (MySqlConnection conn = conexao.Conectar())
             {
-                disciplina.Nome = novoNome;
-                disciplina.Descricao = novaDescricao;
-                Console.WriteLine("Disciplina atualizada com sucesso!");
-                return;
+                conn.Open();
+
+                string sql = @"INSERT INTO disciplinas
+                            (nome, descricao, aluno_id)
+                            VALUES
+                            (@nome, @descricao, @alunoId)";
+
+                using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@nome", nome);
+                    cmd.Parameters.AddWithValue("@descricao", descricao);
+                    cmd.Parameters.AddWithValue("@alunoId", idAluno);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+
+            Console.WriteLine("Disciplina cadastrada no MySQL com sucesso!");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Erro ao cadastrar disciplina: " + ex.Message);
+        }
+    }
+    public void ListarDisciplinas(int idAluno)
+    {
+        try
+        {
+            using (MySqlConnection conn = conexao.Conectar())
+            {
+                conn.Open();
+
+                string sql = @"SELECT id, nome, descricao
+                            FROM disciplinas
+                            WHERE aluno_id = @alunoId";
+
+                using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@alunoId", idAluno);
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        bool encontrou = false;
+
+                        while (reader.Read())
+                        {
+                            encontrou = true;
+
+                            Console.WriteLine("--------------------");
+                            Console.WriteLine("ID: " + reader["id"]);
+                            Console.WriteLine("Nome: " + reader["nome"]);
+                            Console.WriteLine("Descrição: " + reader["descricao"]);
+                        }
+
+                        if (!encontrou)
+                        {
+                            Console.WriteLine("Nenhuma disciplina encontrada.");
+                        }
+                    }
+                }
             }
         }
-        Console.WriteLine("Disciplina não encontrada.");
+        catch (Exception ex)
+        {
+            Console.WriteLine("Erro ao listar disciplinas: " + ex.Message);
+        }
+    }
+
+   public void AtualizarDisciplina(int idDisciplina, int idAluno, string novoNome, string novaDescricao)
+    {
+        try
+        {
+            using (MySqlConnection conn = conexao.Conectar())
+            {
+                conn.Open();
+
+                string sql = @"UPDATE disciplinas
+                            SET nome = @nome, descricao = @descricao
+                            WHERE id = @idDisciplina AND aluno_id = @alunoId";
+
+                using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@nome", novoNome);
+                    cmd.Parameters.AddWithValue("@descricao", novaDescricao);
+                    cmd.Parameters.AddWithValue("@idDisciplina", idDisciplina);
+                    cmd.Parameters.AddWithValue("@alunoId", idAluno);
+
+                    int linhasAfetadas = cmd.ExecuteNonQuery();
+
+                    if (linhasAfetadas > 0)
+                    {
+                        Console.WriteLine("Disciplina atualizada com sucesso!");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Disciplina não encontrada.");
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Erro ao atualizar disciplina: " + ex.Message);
+        }
     }
 
     public void ExcluirDisciplina(int idDisciplina, int idAluno)
     {
-    Disciplina? disciplinaEncontrada = null;
-    foreach (Disciplina disciplina in disciplinas)
-    {
-        if (disciplina.IdDisciplina == idDisciplina &&
-            disciplina.IdAluno == idAluno)
+        try
         {
-            disciplinaEncontrada = disciplina;
-            break;
+            using (MySqlConnection conn = conexao.Conectar())
+            {
+                conn.Open();
+
+                string sql = @"DELETE FROM disciplinas
+                            WHERE id = @idDisciplina AND aluno_id = @alunoId";
+
+                using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@idDisciplina", idDisciplina);
+                    cmd.Parameters.AddWithValue("@alunoId", idAluno);
+
+                    int linhasAfetadas = cmd.ExecuteNonQuery();
+
+                    if (linhasAfetadas > 0)
+                    {
+                        Console.WriteLine("Disciplina excluída com sucesso!");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Disciplina não encontrada.");
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Erro ao excluir disciplina: " + ex.Message);
         }
     }
-    if (disciplinaEncontrada != null)
-    {
-        disciplinas.Remove(disciplinaEncontrada);
-        Console.WriteLine("Disciplina excluída com sucesso!");
-    }
-    else
-    {
-        Console.WriteLine("Disciplina não encontrada.");
-    }
-    }
 }
-

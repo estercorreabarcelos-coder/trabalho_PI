@@ -1,6 +1,7 @@
 public class Tarefa
 {
-    public int IdTarefa { get; set; }
+    public int IdTarefa{ get;set;}
+    public int IdAluno { get; set; }
     public string Titulo { get; set; }
     public string Descricao { get; set; }
     public string Tipo { get; set; }

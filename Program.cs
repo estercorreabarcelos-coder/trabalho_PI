@@ -444,63 +444,65 @@ while (opcao != 18)
         }
 
         case 9:
-            Console.WriteLine("======= ATUALIZAR DISCIPLINA ======= ");
+        {
+            Console.WriteLine("======= ATUALIZAR DISCIPLINA =======");
+
             Console.Write("Digite o ID da disciplina que deseja atualizar: ");
+
             if (int.TryParse(Console.ReadLine(), out int idDisciplinaAtualizar))
             {
-                Console.Write("Digite o ID do aluno dono da disciplina: ");
-                if (int.TryParse(Console.ReadLine(), out int idAlunoDisciplina))
-                {
-                    Console.Write("Novo Nome da Disciplina: ");
-                    string novoNomeDisciplina = Console.ReadLine() ?? "";
+                int idAlunoDisciplina = alunoLogado!.IdAluno;
 
-                    Console.Write("Nova Descrição da Disciplina: ");
-                    string novaDescricaoDisciplina = Console.ReadLine() ?? "";
+                Console.Write("Novo Nome da Disciplina: ");
+                string novoNomeDisciplina = Console.ReadLine() ?? "";
 
-                    disciplinaService.AtualizarDisciplina(
-                        idDisciplinaAtualizar,
-                        idAlunoDisciplina,
-                        novoNomeDisciplina,
-                        novaDescricaoDisciplina
-                    );
-                }
-                else
-                {
-                    Console.WriteLine("ID do aluno inválido. Por favor, digite um número.");
-                }
+                Console.Write("Nova Descrição da Disciplina: ");
+                string novaDescricaoDisciplina = Console.ReadLine() ?? "";
+
+                disciplinaService.AtualizarDisciplina(
+                    idDisciplinaAtualizar,
+                    idAlunoDisciplina,
+                    novoNomeDisciplina,
+                    novaDescricaoDisciplina
+                );
             }
             else
             {
                 Console.WriteLine("ID da disciplina inválido. Por favor, digite um número.");
             }
+
+            Console.WriteLine("\nPressione qualquer tecla para continuar...");
             Console.ReadKey();
+
             break;
+        }
 
 
         case 10:
-            Console.WriteLine("======= EXCLUIR DISCIPLINA ======= ");
+        {
+            Console.WriteLine("======= EXCLUIR DISCIPLINA =======");
+
             Console.Write("Digite o ID da disciplina que deseja excluir: ");
+
             if (int.TryParse(Console.ReadLine(), out int idDisciplinaExcluir))
             {
-                Console.Write("Digite o ID do aluno dono da disciplina: ");
-                if (int.TryParse(Console.ReadLine(), out int idAlunoDisciplinaExcluir))
-                {
-                    disciplinaService.ExcluirDisciplina(
-                        idDisciplinaExcluir,
-                        idAlunoDisciplinaExcluir
-                    );
-                }
-                else
-                {
-                    Console.WriteLine("ID do aluno inválido. Por favor, digite um número.");
-                }
+                int idAlunoDisciplinaExcluir = alunoLogado!.IdAluno;
+
+                disciplinaService.ExcluirDisciplina(
+                    idDisciplinaExcluir,
+                    idAlunoDisciplinaExcluir
+                );
             }
             else
             {
                 Console.WriteLine("ID da disciplina inválido. Por favor, digite um número.");
             }
+
+            Console.WriteLine("\nPressione qualquer tecla para continuar...");
             Console.ReadKey();
+
             break;
+        }
 
         case 11:
             Console.WriteLine("======= CADASTRO DE TAREFA ======= ");
