@@ -53,13 +53,19 @@ while (!encerrarPrograma)
     {
         Console.Clear();
         Console.WriteLine("======= CADASTRO DE ALUNO =======");
+        Console.WriteLine("Digite 0 em qualquer campo para voltar.");
 
         string nomeCadastro;
 
         do
         {
-            Console.Write("Nome: ");
+            Console.Write("\nNome: ");
             nomeCadastro = Console.ReadLine() ?? "";
+
+            if (nomeCadastro == "0")
+            {
+                break;
+            }
 
             if (nomeCadastro.Trim().Length <= 1 ||
                 !nomeCadastro.All(c => char.IsLetter(c) || char.IsWhiteSpace(c)))
@@ -68,18 +74,29 @@ while (!encerrarPrograma)
             }
 
         } while (nomeCadastro.Trim().Length <= 1 ||
-                 !nomeCadastro.All(c => char.IsLetter(c) || char.IsWhiteSpace(c)));
+                !nomeCadastro.All(c => char.IsLetter(c) || char.IsWhiteSpace(c)));
+
+        if (nomeCadastro == "0")
+        {
+            continue;
+        }
 
         string emailCadastro;
+        bool emailValido;
 
         do
         {
-            Console.Write("Email: ");
+            Console.Write("\nEmail: ");
             emailCadastro = (Console.ReadLine() ?? "").Trim();
+
+            if (emailCadastro == "0")
+            {
+                break;
+            }
 
             string[] partes = emailCadastro.Split('@');
 
-            bool emailValido =
+            emailValido =
                 partes.Length == 2 &&
                 partes[0].Length > 0 &&
                 !partes[0].Contains(' ') &&
@@ -95,23 +112,24 @@ while (!encerrarPrograma)
                 Console.WriteLine("Utilize @gmail.com, @hotmail.com ou @organizaê.com.");
             }
 
-        } while (
-            emailCadastro.Split('@').Length != 2 ||
-            emailCadastro.Split('@')[0].Length == 0 ||
-            emailCadastro.Contains(' ') ||
-            !(
-                emailCadastro.Split('@')[1].Equals("gmail.com", StringComparison.OrdinalIgnoreCase) ||
-                emailCadastro.Split('@')[1].Equals("hotmail.com", StringComparison.OrdinalIgnoreCase) ||
-                emailCadastro.Split('@')[1].Equals("organizaê.com", StringComparison.OrdinalIgnoreCase)
-            )
-        );
+        } while (!emailValido);
+
+        if (emailCadastro == "0")
+        {
+            continue;
+        }
 
         string senhaCadastro;
 
         do
         {
-            Console.Write("Senha (mínimo 8 caracteres): ");
+            Console.Write("\nSenha (mínimo 8 caracteres): ");
             senhaCadastro = Console.ReadLine() ?? "";
+
+            if (senhaCadastro == "0")
+            {
+                break;
+            }
 
             if (senhaCadastro.Length < 8)
             {
@@ -119,6 +137,11 @@ while (!encerrarPrograma)
             }
 
         } while (senhaCadastro.Length < 8);
+
+        if (senhaCadastro == "0")
+        {
+            continue;
+        }
 
         alunoService.CadastrarAluno(
             nomeCadastro,
@@ -134,14 +157,22 @@ while (!encerrarPrograma)
 
     // LOGIN
     bool loginRealizado = false;
+    bool voltarParaInicio = false;
 
-    while (!loginRealizado)
+    while (!loginRealizado && !voltarParaInicio)
     {
         Console.Clear();
         Console.WriteLine("======= LOGIN =======");
-
-        Console.Write("Email: ");
+        Console.WriteLine("Digite 0 no campo de email para voltar.");
+        
+        Console.Write("\nEmail: ");
         string emailLogin = Console.ReadLine() ?? "";
+
+        if (emailLogin == "0")
+        {
+            voltarParaInicio = true;
+            continue;
+        }
 
         Console.Write("Senha: ");
         string senhaLogin = LerSenha();
@@ -162,6 +193,10 @@ while (!encerrarPrograma)
         }
     }
 
+    if (voltarParaInicio)
+    {
+        continue;
+    }
     int idAlunoLogado = alunoLogado!.IdAluno;
 
     // MENU PRINCIPAL

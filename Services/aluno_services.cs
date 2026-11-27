@@ -16,6 +16,7 @@ public class AlunoService
                 conn.Open();
 
                 string senhaHash = GerarHashSenha(senha);
+                Console.WriteLine(senhaHash);
 
                 string sql = @"INSERT INTO alunos
                             (nome, email, senha_hash, data_cadastro, status)
